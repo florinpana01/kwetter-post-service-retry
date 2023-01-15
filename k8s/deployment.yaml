@@ -13,7 +13,8 @@ spec:
         app: post-service
     spec: 
       containers:
-        - name: florinpana01/post-service-repository
+        - name: post-service
+          image: florinpana01/post-service-repository 
           ports:
             - containerPort: 8000
           env:
