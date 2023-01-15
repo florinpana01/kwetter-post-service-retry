@@ -40,4 +40,12 @@ describe('PostService', () => {
         const savedPost = await service.create(data);
         expect(savedPost).toBeDefined();
     });
+    // it('test delete post', async () => {
+    //     const data = {
+    //         id: 1
+    //     }
+
+    //     const deletedPost = await service.delete(data.id);
+    //     expect(deletedPost).toBeDefined();
+    // });
 })
