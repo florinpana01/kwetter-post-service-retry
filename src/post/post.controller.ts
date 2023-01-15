@@ -10,26 +10,6 @@ export class PostController {
 
     }
 
-    // @Get()
-    // all() {
-    //     return this.postService.all();
-    // }
-
-    // @EventPattern('hello')
-    // async hello(data: string) {
-    //     console.log(data);
-    // }
-
-    // @Post()
-    // async create(
-    //     @Body('content') content: string,
-    //     @Body('userId') userId: number,
-    // ) {
-    //     const post = await this.postService.create({ content, userId })
-    //     console.log("post created", await post);
-    //     this.client.emit('post_created', post);
-    //     return post;
-    // }
 
     @EventPattern('post_created_gateway')
     async create(data) {
@@ -39,24 +19,17 @@ export class PostController {
         return post;
     }
 
+    @EventPattern('post_request_all')
+    async all() {
+        console.log('The complete post list:');
+        return this.postService.all();
+    }
+
     @Get(':id')
     async get(@Param('id') id: number) {
         return this.postService.get(id);
     }
 
-    
-    // @Put(':id')
-    // async update(
-    //     @Param('id') id: number,
-    //     @Body('content') content: string,
-    //     @Body('userId') userId: string,
-    // ) {
-    //     await this.postService.update(id, {content, userId});
-    //     const post = await this.postService.get(id);
-    //     console.log("post updated", post);
-    //     this.client.emit('post_updated', post);
-    //     return post;
-    // }
     @EventPattern('post_updated_gateway')
     async update(data) {
         console.log("post_updated_gateway", data);
@@ -67,12 +40,6 @@ export class PostController {
         return post;
     }
 
-    // @Delete(':id')
-    // async delete(@Param('id') id: number) {
-    //     this.postService.delete(id);
-    //     this.client.emit('post_deleted', id);
-    //     return HttpStatus.NO_CONTENT;
-    // }
     @EventPattern('post_deleted_gateway')
     async delete(id) {
         console.log("post deleted id", id);
