@@ -3,7 +3,6 @@ import { getRepositoryToken } from "@nestjs/typeorm";
 import { Post } from "./post.entity";
 import { PostService } from "./post.service";
 
-
 describe('PostService', () => {
     let service: PostService;
 
