@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-service
+spec: 
+  selector:
+    matchLabels: 
+      app: post-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: post-service
+    spec: 
+      containers:
+        - name: florinpana01/post-service-repository
+          ports:
+            - containerPort: 8000
+          env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: post-service-secret
+                key: username
+          - name: DB_PASS
+            valueFrom: 
+              secretKeyRef:
+                name: post-service-secret
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: post-service-secret
+                key: database
+        - name: cloud-sql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.28.0
+          command:
+            - "/cloud_sql_proxy"
+            - "-log_debug_stdout"
+            - "-instances=even-envoy-369215:europe-west1:kwetter-database=tcp:3306"
+            - "-credential_file=/secrets/service_account.json"
+          securityContext:
+            runAsNonRoot: true
+          volumeMounts:
+          - name: api-gateway-secret-volume
+            mountPath: /secrets/
+            readOnly: true
+      volumes:
+      - name: api-gateway-secret-volume
+        secret:
+          secretName: api-gateway-secret
